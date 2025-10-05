@@ -1,35 +1,37 @@
 
 
-**Ventlain** is a Python-based CLI tool for Discord server management, testing, and security research. It includes **Nuker** and **Raider** functionalities. **Use responsibly and only on servers you own or have permission to test.**
+# Ventlain
+
+**Ventlain** ist ein Python-basiertes CLI-Tool zur Verwaltung von Discord-Servern, zum Testen und für Sicherheitsforschung. Es enthält Funktionen mit **Nuker**- und **Raider**-Verhalten. **Nur verantwortungsvoll und ausschließlich auf Servern verwenden, die du besitzt oder für die du ausdrückliche Erlaubnis zum Testen hast. Missbrauch ist verboten.**
 
 ---
 
 ## Features
 
-- **Nuker Tools:** Channel/role spam, mass bans, webhook/emoji spam, server nuking, etc.
-- **Raider Tools:** Mass DMs, server join/leave, message/reaction/voice spam, friend request spam, etc.
-- **Token Management:** Add and validate Discord tokens.
+* **Nuker-Tools:** Channel/Role-Spam, Massen-Bans, Webhook/Emoji-Spam, Server-Nuking, usw.
+* **Raider-Tools:** Mass-DMs, Server Join/Leave, Message/Reaction/Voice-Spam, Friend-Request-Spam, usw.
+* **Token-Management:** Hinzufügen und Validieren von Discord-Tokens.
 
 ---
 
-## Installation on Linux
+## Installation (Linux)
 
-### 1. Prerequisites
+### 1. Voraussetzungen
 
-- **Python 3.8+** (recommended: Python 3.10)
-- **Git** (to clone the repo)
-- **Pip** (Python package manager)
+* **Python 3.8+** (empfohlen: Python 3.10)
+* **Git** (zum Klonen des Repos)
+* **pip** (Python-Paketmanager)
 
-#### Install Dependencies
+#### Systemabhängige Abhängigkeiten installieren
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-sudo apt install python3 python3-pip git -y
+sudo apt install -y python3 python3-pip git
 ```
 
 ---
 
-### 2. Clone the Repository
+### 2. Repository klonen
 
 ```bash
 git clone https://github.com/vantixt777/ventlain.git
@@ -38,13 +40,13 @@ cd ventlain
 
 ---
 
-### 3. Install Python Dependencies
+### 3. Python-Abhängigkeiten installieren
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-**Note:** If `requirements.txt` is missing, manually install the required packages:
+**Hinweis:** Falls `requirements.txt` fehlt, die benötigten Pakete manuell installieren, z. B.:
 
 ```bash
 pip3 install pystyle
@@ -52,13 +54,20 @@ pip3 install pystyle
 
 ---
 
-### 4. Run the Tool
+### 4. Tool starten
 
 ```bash
 python3 ventlain.py
 ```
 
-*(Replace `main.py` with the actual filename if different.)*
+*(Falls die Hauptdatei einen anderen Namen hat, ersetze `ventlain.py` durch den tatsächlichen Dateinamen.)*
 
 ---
 
+## Rechtlicher Hinweis / Ethik
+
+Dieses Projekt kann bei missbräuchlicher Nutzung Schaden anrichten. Nutze es nur für legitime Tests auf Systemen, die du besitzt oder für die du eine ausdrückliche Genehmigung hast. Der Autor übernimmt keine Verantwortung für Missbrauch.
+
+---
+
+Wenn du möchtest, passe ich noch die englische Variante an oder erstelle eine kurze LICENSE-Empfehlung (z. B. MIT), die du ins Repo aufnehmen kannst.
