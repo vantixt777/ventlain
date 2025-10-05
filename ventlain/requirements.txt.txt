@@ -1,0 +1,5 @@
+discord.py==2.3.0
+aiohttp==3.8.5
+requests==2.31.0
+colorama==0.4.6
+pystyle==0.6
