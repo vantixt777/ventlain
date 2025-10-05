@@ -1,0 +1,15 @@
+# 🔥 ventlain 
+
+> **Warning: This tool is for educational purposes only. Misuse of this software is prohibited and may violate Discord's Terms of Service.**
+
+##  About ventlain
+
+Ventlain is a feature-rich Discord nuking/raiding tool designed for security researchers and penetration testers. Built with Python, it provides comprehensive server management capabilities for testing Discord's security measures.
+
+
+## 🛠️ Installation (Kali Linux)
+
+### Prerequisites
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip -y
