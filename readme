@@ -1,23 +1,27 @@
 
-**Ventlain** is a Python-based CLI tool designed for Discord server management, testing, and security research. It includes **Nuker** and **Raider** functionalities. **Use responsibly and only on servers you own or have permission to test.**
+
+**Ventlain** is a Python-based CLI tool for Discord server management, testing, and security research. It includes **Nuker** and **Raider** functionalities. **Use responsibly and only on servers you own or have permission to test.**
 
 ---
 
-### **Features**
+## Features
+
 - **Nuker Tools:** Channel/role spam, mass bans, webhook/emoji spam, server nuking, etc.
 - **Raider Tools:** Mass DMs, server join/leave, message/reaction/voice spam, friend request spam, etc.
 - **Token Management:** Add and validate Discord tokens.
 
 ---
 
-## **Installation on Linux**
+## Installation on Linux
 
-### **1. Prerequisites**
+### 1. Prerequisites
+
 - **Python 3.8+** (recommended: Python 3.10)
 - **Git** (to clone the repo)
 - **Pip** (Python package manager)
 
-#### **Install Dependencies**
+#### Install Dependencies
+
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install python3 python3-pip git -y
@@ -25,7 +29,8 @@ sudo apt install python3 python3-pip git -y
 
 ---
 
-### **2. Clone the Repository**
+### 2. Clone the Repository
+
 ```bash
 git clone https://github.com/vantixt777/ventlain.git
 cd ventlain
@@ -33,22 +38,27 @@ cd ventlain
 
 ---
 
-### **3. Install Python Dependencies**
+### 3. Install Python Dependencies
+
 ```bash
 pip3 install -r requirements.txt
 ```
+
 **Note:** If `requirements.txt` is missing, manually install the required packages:
+
 ```bash
 pip3 install pystyle
 ```
 
 ---
 
-### **4. Run the Tool**
+### 4. Run the Tool
+
 ```bash
 python3 ventlain.py
 ```
-*(Replace `ventlain.py` with the actual filename if different.)*
+
+*(Replace `main.py` with the actual filename if different.)*
 
 ---
 
