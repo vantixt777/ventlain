@@ -1,6 +1,6 @@
 # Ventlain
-![Image Alt]([https://github.com/vantixt777/Blue-Tiger/blob/c9f375da8a8c3cd4cff127da7c965f3eb6201e7a/bluetiger%20pic.png](https://github.com/vantixt777/ventlain/blob/7c5ef2c4f4d166b70fcf4e5fb125d1b10c79388d/pic))
-![Image Alt]([https://github.com/vantixt777/Blue-Tiger/blob/c9f375da8a8c3cd4cff127da7c965f3eb6201e7a/bluetiger%20pic.png](https://github.com/vantixt777/ventlain/blob/7c5ef2c4f4d166b70fcf4e5fb125d1b10c79388d/pic](https://github.com/vantixt777/ventlain/blob/7c5ef2c4f4d166b70fcf4e5fb125d1b10c79388d/pic2)))
+ ![Image Alt](https://github.com/vantixt777/ventlain/blob/ff80f9fa50d5a023fed5fa7d79730661986f8519/pic.png)
+  ![Image Alt](https://github.com/vantixt777/ventlain/blob/ff80f9fa50d5a023fed5fa7d79730661986f8519/pic2.png)
 **Ventlain** is a Python-based CLI tool for managing Discord servers, testing, and security research. It includes features with **Nuker** and **Raider** behavior. **Use responsibly and only on servers you own or have explicit permission to test. Misuse is prohibited.**
 
 ---
