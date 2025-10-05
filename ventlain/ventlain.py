@@ -20,7 +20,7 @@ class DiscordTool:
             """
         self.tokens = []
         self.file_mapping = {
-            # Nuker Tools
+            
             1: "tools/channel_spammer.py",
             2: "tools/role_spammer.py",
             3: "tools/delete_channels.py",
@@ -30,7 +30,7 @@ class DiscordTool:
             7: "tools/emoji_spammer.py",
             8: "tools/server_nuker.py",
 
-            # Raider Tools
+            
             11: "tools/mass_dm.py",
             12: "tools/join_server.py",
             13: "tools/leave_server.py",
@@ -132,7 +132,7 @@ class DiscordTool:
             elif choice == '2':
                 self.check_tokens()
             elif choice.isdigit() and 3 <= int(choice) <= 9:
-                self.handle_selection(int(choice) + 8)  # Mapping zu den richtigen File-Nummern
+                self.handle_selection(int(choice) + 8)  
             else:
                 print("Invalid option!")
                 time.sleep(1)
@@ -174,7 +174,7 @@ class DiscordTool:
 
         for token in self.tokens:
             time.sleep(0.1)
-            if len(token) > 50:  # Simulierter Check
+            if len(token) > 50:  
                 valid_tokens.append(token)
                 print(f"[VALID] {token[:20]}...")
             else:
@@ -193,4 +193,5 @@ if __name__ == "__main__":
         tool.start()
     except KeyboardInterrupt:
         print("\nExiting...")
+
         sys.exit()
