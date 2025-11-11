@@ -96,14 +96,14 @@ class DiscordNuker:
         self.channel_name_prefix = input("Enter the channel name prefix (default: 'vantixt'): ").strip()
         if not self.channel_name_prefix:
             self.channel_name_prefix = "vantixt"
-        self.channel_count = input("Enter the number of channels to create (default: 500): ").strip()
+        self.channel_count = input("Enter the number of channels to create (default: 300): ").strip()
         if not self.channel_count:
-            self.channel_count = 500
+            self.channel_count = 300
         else:
             self.channel_count = int(self.channel_count)
-        self.message_spam_amount = input("Enter the number of spam messages per channel (default: 20): ").strip()
+        self.message_spam_amount = input("Enter the number of spam messages per channel (default: 10): ").strip()
         if not self.message_spam_amount:
-            self.message_spam_amount = 20
+            self.message_spam_amount = 10
         else:
             self.message_spam_amount = int(self.message_spam_amount)
         confirm = input("Do you want the bot to leave after nuking? (yes/no, default: yes): ").strip().lower()
@@ -609,3 +609,4 @@ if __name__ == '__main__':
     nuker = DiscordNuker()
     nuker.get_inputs()
     nuker.run_bot()
+
